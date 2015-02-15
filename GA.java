@@ -1,11 +1,12 @@
 import static java.lang.System.*;
 import java.util.*;
+import java.io.*;
 
 public class GA {
 
 	static int popSize = 20;
 
-	Random rand = new Random(1);
+	Random rand = new Random(50);
 
 	Person[] pop;
 
@@ -37,87 +38,100 @@ public class GA {
 		return ind;
 	}
 
-	//returns 5 people for reproduction for next gen
 	public Person[] tournSelect() {
-		
-		int[] tourn1 = randShuffle(initializeIndex(popSize));
-		Person[] parents = new Person[5];
-		for (int i = 0; i < parents.length; i ++) {
-			Person[] group = new Person[4]; //popSize / 5
-			for (int j = 0; j < group.length; j++)
-			{
-				group[j] = pop[tourn1[i*4+j]];
-			}
-			Arrays.sort(group);
-			parents[i] = group[0];
-		}
-		return parents;
-		
-		/*
-		// Method 2
 		int[] tourn1 = randShuffle(initializeIndex(popSize));
 		int[] tourn2 = randShuffle(initializeIndex(popSize));
-		Person[] nextGen = new Person[popSize];
+		Person[] children = new Person[popSize];
 		for (int i = 0; i < popSize; i++) {
 			if (pop[tourn1[i]].compareTo(pop[tourn2[i]]) < 1) 
-				nextGen[i] = pop[tourn1[i]];
+				children[i] = new Person(pop[tourn1[i]].dna, rand);
 			else 
-				nextGen[i] = pop[tourn2[i]];
+				children[i] = new Person(pop[tourn2[i]].dna, rand);
 		}
-		for (int i = 0; i < popSize; i++) {
 
+		//do crossover and mutation on children
+		for (int i = 0; i < children.length; i += 2) {
+			//int ri = rand.next  Int(popSize);
+			Person[] coResult = children[i].crossover(children[i+1]);
+			coResult[0].mutation();
+			coResult[1].mutation();
+			children[i] = coResult[0];
+			children[i+1] = coResult[1];
 		}
-		*/
+
+		return children;		
 	}
 
-	public void nextGen(Person[] parents) {
+	public void mergeAndReduce(Person[] parents, Person[] children) {
+		Person[] newPop = new Person[popSize * 2];
+		for (int i = 0; i < popSize; i++) {
+			newPop[i] = parents[i];
+			newPop[i+20] = children[i];
+		}
+		Arrays.sort(newPop);
 		Person[] nextGen = new Person[popSize];
-		for(int i = 0; i < popSize; i++) {
-			for (int j = 0; j < parents.length; j++ ) {
-				if (i/5 != j){
-					nextGen[i] = new Person(parents[i/5].crossoverAndMutation(parents[j]), rand);
-				}
-			}
+		nextGen[0] = newPop[0];
+		nextGen[1] = newPop[1];
+		for (int i = 2; i < popSize; i++) {
+			nextGen[i] = newPop[rand.nextInt(38) + 2];
 		}
 		pop = nextGen;
 	}
 
-	public void run() {
+	public void run() throws IOException {
+
 		int runCount = 10;
 		for (int run = 0; run < runCount; run++) {
-			out.println("run = " + run);
+			File file = new File("C:/Users/Abbas/Documents/CIG/outputMat" + run + ".txt");
+			file.getParentFile().mkdirs();
+
+			PrintWriter printWriter = new PrintWriter("outputMat"+run+".txt");
+			//out.println("run = " + run);
 			int totalGen = 200;
-			double[] avgFit = new double[totalGen];
-			double[] bestFit = new double[totalGen];
+			double[] avgX = new double[totalGen];
+			double[] bestY = new double[totalGen];
 			double[] bestX = new double[totalGen];
 
 			int gen = 0;
+			printWriter.print("Gen\tavgX\tbestX\n");
 			initializePop();
 			do {
 				double sum = 0;
 				double min = Double.MAX_VALUE;
 				for (Person p: pop) {
-					double fitness = p.evalFitness(p.decode(p.dna));
-					sum += fitness;
-					if (fitness < min) {
-						min = fitness;
-						bestX[gen] = p.decode(p.dna);
+					double x = p.decode(p.dna);
+					sum += x;
+					if (p.getFitness() < min) {
+						min = x;
+						bestY[gen] = p.getFitness();
 					}
 				}
-				avgFit[gen] = sum / popSize;
-				bestFit[gen] = min;
-				out.printf("\tGen %d\tavgFit = %.5f\tand bestFit is %.5f\n", gen, avgFit[gen], bestFit[gen]);
+				avgX[gen] = sum / popSize;
+				bestX[gen] = min;
+				//out.printf("\tGen %d\tavgX = %.5f\tand bestX is %.5f\tf(x)= %.5f\n", gen, avgX[gen], bestX[gen], bestY[gen]);
+				//printWriter.print(gen + "\t" + avgX[gen] + "\t" + bestX);
+				printWriter.printf("%d\t%.5f\t%.5f\n", gen, avgX[gen], bestX[gen]);
+				/*
+				for (int i = 0; i < popSize; i++) {
+					out.println(pop[i].getFitness());
+				}
+				*/
 				gen++;
 
-				Person[] parents = tournSelect();
-				nextGen(parents);
+				Person[] children = tournSelect();
+				mergeAndReduce(pop, children);
 
 			} while (gen < totalGen);
+			printWriter.close();
+			/*
+			gen--;
+			out.printf("\tGen %d\tavgX = %.5f\tand bestX is %.5f\tf(x)= %.5f\n", gen, avgX[gen], bestX[gen], bestY[gen]);
 			out.println();
+			*/
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException{
 		new GA().run();		
 	}
 }

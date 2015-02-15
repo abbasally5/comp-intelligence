@@ -8,6 +8,8 @@ public class Person implements Comparable<Person> {
 	final double pCross = .9;
 	final double pMut = .05;
 
+	//should add a fitness variable
+
 	int[] dna;
 
 	Random rand;
@@ -16,9 +18,9 @@ public class Person implements Comparable<Person> {
 		this(20, 0, 1, rand);
 	}
 
-	public Person(int[] dna, Random rand) {
+	public Person(int[] d, Random rand) {
 		this(rand);
-		this.dna = dna;
+		this.dna = d;
 	}
 
 	public Person(int bits, int min, int max, Random rand) {
@@ -60,24 +62,39 @@ public class Person implements Comparable<Person> {
 		return x;
 	}
 
+	public double getFitness() {
+		return evalFitness(decode(dna));
+	}
+
 	public double evalFitness(double x) {
 		return Math.pow((6 * x - 2), 2) * Math.sin(12 * x - 4);
 	}
 
-	public int[] crossoverAndMutation(Person p2) {
-		int[] dnaCopy = Arrays.copyOf(dna, dna.length);
+	//crossover and mutation
+	public Person[] crossover(Person p2) {
+		//System.out.println("\tp1 = " + getFitness() + "\tp2 = " + p2.getFitness());
+		Person[] result = new Person[2];
+		result[0] = new Person(Arrays.copyOf(dna, dna.length), rand);
+		result[1] = new Person(Arrays.copyOf(p2.dna, dna.length), rand);
 		if (rand.nextDouble() < pCross) {
 			int singlePt = rand.nextInt(bits);
 			for (int i = singlePt; i < bits; i++) {
-				dnaCopy[i] = p2.dna[i];
+				int swap = result[0].getBit(i);
+				result[0].setBit(i, result[1].getBit(i));
+				result[1].setBit(i, swap);
 			}
 		}
+		
+		//System.out.println("\t" + evalFitness(decode(dnaCopy)));
+		return result;
+	}
+
+	public void mutation() {
 		for (int i = 0; i < bits; i++) {
 			if (rand.nextDouble() < pMut) {
-				dnaCopy[i] = (i+1) % 2;
+				dna[i] = (i+1) % 2;
 			}
 		}
-		return dnaCopy;
 	}
 
 	public int compareTo(Person p) {
