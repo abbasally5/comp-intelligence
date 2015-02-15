@@ -56,7 +56,7 @@ for i=0:9
     plot(dataArray{:,1}, dataArray{:,2});
     plot(dataArray{:,1}, dataArray{:,3});
     
-    legend('optimal X', 'average X', 'bext X');
+    legend('optimal X', 'average X', 'best X');
     % for i=0:200
     %     plot(dataArray{i,1}, dataArray{i,2});
     %     plot(dataArray{i,1}, dataArray{i,3});
