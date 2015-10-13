@@ -21,48 +21,29 @@ def resetSolvable():
     global solvable
     solvable = False
 
+# uses binary encoding
+# for sure has open entering
 def initPop(size, len):
     pop = []
     for i in range(size):
-        indiv = ""
-        for i in range(len):
-            indiv += random.randint(0,1)
+        indiv = "0"
+        for i in range(len-2):
+            indiv += str(random.randint(0,1))
+        indiv += "0"
         pop.append(indiv)
     return pop
 
-def initPop2(size, len):
-    pop = []
-    for i in range(size):
-        indiv = ""
-        for i in range(len):
-            hexNum = hex(random.randint(0,15))
-            indiv += hexNum[2:]
-        pop.append(indiv)
-    return pop
-
-# hex to binary string
-def phenotype(ind1):
-    numlen = len(ind1) * math.log(16, 2) # num of chars in ind1 * 4
-    num = bin(int(ind1, 16))
-    return num[2:].zfill(int(numlen))
-
-# converts to actual maze
+# converts to maze using binary
 def phenotypeArr(ind1):
-    s = phenotype(ind1)
+    rows = 8
     maze = []
-    #'''
-    for i in range((len(ind1)/2)):
-        a = s[i*8:(i+1)*8]
+    for i in range(len(ind1)/rows):
+        a = ind1[i*8:(i+1)*8]
         maze.append([])
         maze[i] = list(a)
-    #'''
-    '''
-    for i in range((len(ind1)/2)):
-        for j in range((len(ind1)/2)):
-            char = s[i*(len(ind1)/2) + j]
-            maze[i][j] = char
-    '''
+    #print maze
     return maze
+
 
 # TODO: define fitnesses
 def fitness(ind):
@@ -73,8 +54,8 @@ def fitness(ind):
 def normalFitness(ind):
     score = complexScore(ind)
     if isSolvable(ind):
-        return score
-    return score + 100
+        return score*10
+    return score*10 + 500
 
 def randomFitness(ind):
     return random.randint(0,64)
@@ -85,28 +66,32 @@ def noveltyFitness(ind):
 def sumFit(pop):
     sum = 0
     for i in range(len(pop)):
-        sum += func(pop[i])
+        fit = func(pop[i])
+        print fit
+        sum += fit
     return sum
 
 def sumComp(pop):
     sum = 0
     for i in range(len(pop)):
-        sum += complexScore(pop[i])
+        score = complexScore(pop[i])
+        #print score
+        sum += score
     return sum
 
 def numOnes(ind):
-    binary = phenotype(ind)
     count = 0
-    for i in range(len(binary)):
-        if binary[i] is '1':
+    for i in range(len(ind)):
+        if ind[i] is '1':
             count += 1
     return count
 
 def complexScore(ind):
-    return abs(numOnes(ind) - 25)
+    return abs(numOnes(ind) - 27)
 
 def isSolvable(maze):
     global solvable
+    resetSolvable()
     solve(0,0, phenotypeArr(maze))
     return solvable
 
@@ -180,8 +165,8 @@ def newPop(pop1, pop2):
 def mutation(ind1):
     if random.random() < mutationRate:
         index = random.randint(0, len(ind1)-1)
-        hexNum = hex(random.randint(0,15))
-        ind1 = ind1[:index] + hexNum[2:] + ind1[index+1:]
+        num = random.randint(0,1)
+        ind1 = ind1[:index] + str(num) + ind1[index+1:]
     return ind1
 
 def crossover(ind1, ind2):
