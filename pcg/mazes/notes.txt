@@ -1,0 +1,25 @@
+Things to improve/do
+    - create different starting location
+    - take into account more functions/heuristics to quantify maze
+        - width of walls
+        - width of walking areas
+        -  
+    -  
+    - construct maze from solution
+    - maybe switch to heuristic solver (A*) to speed up tests
+    - write novelty fitnesses
+
+Problems with current implementation
+    - maze could be half ones, half zeros split
+    - crossover will likely make solvable mazes unsolvable
+        - is GA even good for PCG?
+    - i don't understand why complexity is high given low # of solvable mazes
+        - maybe values solving higher?
+    - i don't understand why fitness is so low given low # of solvable mazes
+        - error in solvable code?
+
+Changes I've made
+    - switched to binary encoding
+    - played with normal fitness
+    - played with crossover rate
+    - start and end position are 0
