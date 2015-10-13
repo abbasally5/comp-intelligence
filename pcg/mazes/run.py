@@ -4,7 +4,7 @@ def printMaze(ind):
     maze = phenotypeArr(ind)
     for i in range(len(maze)):
         row = ""
-        for j in range(len(maze(i))):
+        for j in range(len(maze[i])):
             row += maze[i][j]
         print row
 
