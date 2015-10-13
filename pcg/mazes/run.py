@@ -14,13 +14,16 @@ popSize = 20
 arraySize = 8
 generations = 20;
 
-setFunc(randomFitness)
+setFunc(normalFitness)
+resetSolvable()
 
 pop = initPop(popSize,arraySize*2)
 
 for i in range(generations):
     avgFitness = sumFit(pop)/float(len(pop))
-    print ('avg fitness: ' + str(avgFitness))
+    avgComplexity = sumComp(pop)/float(len(pop))
+    print ('avg fitness:\t' + str(avgFitness))
+    print ('avg complexity:\t' + str(avgComplexity))
     children = tournSelect(pop)
     children = crossAndMut(children)
     pop = newPop(pop, children)
@@ -31,7 +34,11 @@ for i in range(len(pop)):
     if isSolvable(pop[i]):
         count += 1
         printMaze(pop[i])
+        print''
 print count
+print len(pop)
+
+
 
 
 

@@ -26,6 +26,15 @@ def initPop(size, len):
     for i in range(size):
         indiv = ""
         for i in range(len):
+            indiv += random.randint(0,1)
+        pop.append(indiv)
+    return pop
+
+def initPop2(size, len):
+    pop = []
+    for i in range(size):
+        indiv = ""
+        for i in range(len):
             hexNum = hex(random.randint(0,15))
             indiv += hexNum[2:]
         pop.append(indiv)
@@ -62,7 +71,10 @@ def fitness(ind):
     print 'fit: ' + str(a)
 
 def normalFitness(ind):
-    pass
+    score = complexScore(ind)
+    if isSolvable(ind):
+        return score
+    return score + 100
 
 def randomFitness(ind):
     return random.randint(0,64)
@@ -76,8 +88,22 @@ def sumFit(pop):
         sum += func(pop[i])
     return sum
 
-def isComplex():
-    pass
+def sumComp(pop):
+    sum = 0
+    for i in range(len(pop)):
+        sum += complexScore(pop[i])
+    return sum
+
+def numOnes(ind):
+    binary = phenotype(ind)
+    count = 0
+    for i in range(len(binary)):
+        if binary[i] is '1':
+            count += 1
+    return count
+
+def complexScore(ind):
+    return abs(numOnes(ind) - 25)
 
 def isSolvable(maze):
     global solvable
