@@ -29,11 +29,14 @@ setMutationRate(0.1)
 popSize = 20
 arraySize = 64
 generations = 10;
+testRuns = 20
 
+'''
 setFunc(normalFitness)
 resetSolvable()
 
-pop = initPop(popSize,arraySize*2)
+pop = initPop(popSize,arraySize)
+setPop(pop)
 print(numSolvable(pop))
 
 for i in range(generations):
@@ -46,10 +49,106 @@ for i in range(generations):
     children = tournSelect(pop)
     children = crossAndMut(children)
     pop = newPop(pop, children)
+    setPop(pop)
 
-print(numSolvable(pop))
 printSolvable(pop)
+print(numSolvable(pop))
 print len(pop)
+printMaze(pop[i])
+'''
+
+# testing - get stats
+random.seed(0)
+avgInitSolvable = 0
+avgSolvable = 0
+avgComplexity = 0
+
+print 'Random Fitness'
+setFunc(randomFitness)
+
+for i in range(testRuns):
+    resetSolvable()
+
+    pop = initPop(popSize, arraySize)
+    setPop(pop)
+    avgInitSolvable += numSolvable(pop)
+
+    for i in range(generations):
+        children = tournSelect(pop)
+        children = crossAndMut(children)
+        pop = newPop(pop, children)
+        setPop(pop)
+
+    avgSolvable += numSolvable(pop)
+    avgComplexity += sumComp(pop)/float(len(pop))
+
+avgInitSolvable = avgInitSolvable/float(testRuns)
+avgSolvable = avgSolvable/float(testRuns)
+avgComplexity = avgSolvable/float(testRuns)
+print 'avgInitSolvable:\t' + str(avgInitSolvable) + '\n' + \
+      'avgSolvable:\t\t' + str(avgSolvable) + '\n' + \
+      'avgComplexity:\t\t' + str(avgComplexity)
+
+avgInitSolvable = 0
+avgSolvable = 0
+avgComplexity = 0
+
+print 'Normal Fitness'
+setFunc(normalFitness)
+
+for i in range(testRuns):
+    resetSolvable()
+
+    pop = initPop(popSize, arraySize)
+    setPop(pop)
+    avgInitSolvable += numSolvable(pop)
+
+    for i in range(generations):
+        children = tournSelect(pop)
+        children = crossAndMut(children)
+        pop = newPop(pop, children)
+        setPop(pop)
+
+    avgSolvable += numSolvable(pop)
+    avgComplexity += sumComp(pop)/float(len(pop))
+
+avgInitSolvable = avgInitSolvable/float(testRuns)
+avgSolvable = avgSolvable/float(testRuns)
+avgComplexity = avgSolvable/float(testRuns)
+print 'avgInitSolvable:\t' + str(avgInitSolvable) + '\n' + \
+      'avgSolvable:\t\t' + str(avgSolvable) + '\n' + \
+      'avgComplexity:\t\t' + str(avgComplexity)
+
+avgInitSolvable = 0
+avgSolvable = 0
+avgComplexity = 0
+
+print 'Novelty Fitness'
+setFunc(noveltyFitness)
+
+for i in range(testRuns):
+    resetSolvable()
+
+    pop = initPop(popSize, arraySize)
+    setPop(pop)
+    avgInitSolvable += numSolvable(pop)
+
+    for i in range(generations):
+        children = tournSelect(pop)
+        children = crossAndMut(children)
+        pop = newPop(pop, children)
+        setPop(pop)
+
+    avgSolvable += numSolvable(pop)
+    avgComplexity += sumComp(pop)/float(len(pop))
+
+avgInitSolvable = avgInitSolvable/float(testRuns)
+avgSolvable = avgSolvable/float(testRuns)
+avgComplexity = avgSolvable/float(testRuns)
+print 'avgInitSolvable:\t' + str(avgInitSolvable) + '\n' + \
+      'avgSolvable:\t\t' + str(avgSolvable) + '\n' + \
+      'avgComplexity:\t\t' + str(avgComplexity)
+
 
 
 

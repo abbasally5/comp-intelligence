@@ -23,3 +23,13 @@ Changes I've made
     - played with normal fitness
     - played with crossover rate
     - start and end position are 0
+
+representations of mazes
+fitness values of mazes
+    - keep unsolvable, but interesting mazes.
+            - how close to solvable
+                - could change crossover location/size
+            - number of problems
+    - NSGA-2 - multiobjective algo
+    - multimodal GA - single obj - shared fitness - 
+find papers

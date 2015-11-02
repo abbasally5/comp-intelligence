@@ -4,6 +4,11 @@ global func
 global crossoverRate
 global mutationRate
 global solvable
+global pop
+
+def setPop(p):
+    global pop
+    pop = p
 
 def setFunc(fit):
     global func
@@ -48,25 +53,40 @@ def phenotypeArr(ind1):
 # TODO: define fitnesses
 def fitness(ind):
     global func
-    a = func(ind)
+    global pop
+    a = func(ind, pop)
     print 'fit: ' + str(a)
 
-def normalFitness(ind):
+def normalFitness(ind, pop):
     score = complexScore(ind)
     if isSolvable(ind):
         return score*10
     return score*10 + 500
 
-def randomFitness(ind):
+def randomFitness(ind, pop):
     return random.randint(0,64)
 
-def noveltyFitness(ind):
-    pass
+def noveltyFitness(ind, pop):
+    diff = 0
+    for i in range(len(pop)):
+        if ind is not pop[i]:
+            diff -= numDiff(ind, pop[i])
+    fit = diff/float(len(pop))
+    if (isSolvable(ind)):
+        fit -= 500
+    return fit
+
+def numDiff(ind1, ind2):
+    count = 0;
+    for i in range(len(ind1)):
+        if ind1[i] is ind2[i]:
+            count += 1
+    return count
 
 def sumFit(pop):
     sum = 0
     for i in range(len(pop)):
-        fit = func(pop[i])
+        fit = func(pop[i], pop)
         print fit
         sum += fit
     return sum
@@ -143,11 +163,13 @@ def randShuffle(indices):
 
 def compare(ind1, ind2):
     global func
-    return func(ind1) - func(ind2)
+    global pop
+    return func(ind1, pop) - func(ind2, pop)
 
 def compareFit(ind1, ind2):
     global func
-    if func(ind1) < func(ind2):
+    global pop
+    if func(ind1, pop) < func(ind2, pop):
         return ind1
     return ind2
 
