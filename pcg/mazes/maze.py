@@ -87,7 +87,6 @@ def sumFit(pop):
     sum = 0
     for i in range(len(pop)):
         fit = func(pop[i], pop)
-        print fit
         sum += fit
     return sum
 
@@ -95,7 +94,6 @@ def sumComp(pop):
     sum = 0
     for i in range(len(pop)):
         score = complexScore(pop[i])
-        #print score
         sum += score
     return sum
 
@@ -164,7 +162,7 @@ def randShuffle(indices):
 def compare(ind1, ind2):
     global func
     global pop
-    return func(ind1, pop) - func(ind2, pop)
+    return int(func(ind1, pop) - func(ind2, pop))
 
 def compareFit(ind1, ind2):
     global func

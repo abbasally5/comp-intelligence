@@ -72,8 +72,13 @@ for i in range(testRuns):
     pop = initPop(popSize, arraySize)
     setPop(pop)
     avgInitSolvable += numSolvable(pop)
-
-    for i in range(generations):
+    for j in range(generations):
+       '''
+        if i is 0:
+            print j
+            printMaze(pop[i])
+            print''
+        '''
         children = tournSelect(pop)
         children = crossAndMut(children)
         pop = newPop(pop, children)
@@ -84,11 +89,12 @@ for i in range(testRuns):
 
 avgInitSolvable = avgInitSolvable/float(testRuns)
 avgSolvable = avgSolvable/float(testRuns)
-avgComplexity = avgSolvable/float(testRuns)
+avgComplexity = avgComplexity/float(testRuns)
 print 'avgInitSolvable:\t' + str(avgInitSolvable) + '\n' + \
       'avgSolvable:\t\t' + str(avgSolvable) + '\n' + \
       'avgComplexity:\t\t' + str(avgComplexity)
 
+random.seed(0)
 avgInitSolvable = 0
 avgSolvable = 0
 avgComplexity = 0
@@ -103,7 +109,8 @@ for i in range(testRuns):
     setPop(pop)
     avgInitSolvable += numSolvable(pop)
 
-    for i in range(generations):
+    for j in range(generations):
+        
         children = tournSelect(pop)
         children = crossAndMut(children)
         pop = newPop(pop, children)
@@ -114,11 +121,12 @@ for i in range(testRuns):
 
 avgInitSolvable = avgInitSolvable/float(testRuns)
 avgSolvable = avgSolvable/float(testRuns)
-avgComplexity = avgSolvable/float(testRuns)
+avgComplexity = avgComplexity/float(testRuns)
 print 'avgInitSolvable:\t' + str(avgInitSolvable) + '\n' + \
       'avgSolvable:\t\t' + str(avgSolvable) + '\n' + \
       'avgComplexity:\t\t' + str(avgComplexity)
 
+random.seed(0)
 avgInitSolvable = 0
 avgSolvable = 0
 avgComplexity = 0
@@ -133,7 +141,8 @@ for i in range(testRuns):
     setPop(pop)
     avgInitSolvable += numSolvable(pop)
 
-    for i in range(generations):
+    for j in range(generations):
+        
         children = tournSelect(pop)
         children = crossAndMut(children)
         pop = newPop(pop, children)
@@ -142,9 +151,11 @@ for i in range(testRuns):
     avgSolvable += numSolvable(pop)
     avgComplexity += sumComp(pop)/float(len(pop))
 
+
+
 avgInitSolvable = avgInitSolvable/float(testRuns)
 avgSolvable = avgSolvable/float(testRuns)
-avgComplexity = avgSolvable/float(testRuns)
+avgComplexity = avgComplexity/float(testRuns)
 print 'avgInitSolvable:\t' + str(avgInitSolvable) + '\n' + \
       'avgSolvable:\t\t' + str(avgSolvable) + '\n' + \
       'avgComplexity:\t\t' + str(avgComplexity)

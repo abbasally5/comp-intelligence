@@ -1,0 +1,9 @@
+Random Fitness
+avgInitSolvable:	0.65
+avgSolvable:		0.6
+avgComplexity:		0.03
+Normal Fitness
+avgInitSolvable:	0.8
+avgSolvable:		17.7
+avgComplexity:		0.885
+Novelty Fitness

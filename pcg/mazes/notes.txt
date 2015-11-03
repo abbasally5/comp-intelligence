@@ -17,6 +17,8 @@ Problems with current implementation
         - maybe values solving higher?
     - i don't understand why fitness is so low given low # of solvable mazes
         - error in solvable code?
+    - init Solvable for random is different?
+
 
 Changes I've made
     - switched to binary encoding
