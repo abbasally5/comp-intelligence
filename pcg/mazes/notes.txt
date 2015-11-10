@@ -35,3 +35,9 @@ fitness values of mazes
     - NSGA-2 - multiobjective algo
     - multimodal GA - single obj - shared fitness - 
 find papers
+
+http://math.stackexchange.com/questions/488639/equation-for-finding-maze-solvability
+
+Reading NSGA-II
+    - what is dominated
+    - explain pareto-front
