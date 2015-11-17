@@ -1,0 +1,4 @@
+Issues
+
+ - Find out why wait can only go up to 4
+ - Does adding wait remove pressure reading?
