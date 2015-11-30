@@ -22,6 +22,8 @@ def printSolvable(pop):
         if isSolvable(pop[i]):
             printMaze(pop[i])
             print''
+
+
 # main
 
 setCrossoverRate(0.9)
@@ -73,7 +75,7 @@ for i in range(testRuns):
     setPop(pop)
     avgInitSolvable += numSolvable(pop)
     for j in range(generations):
-       '''
+        '''
         if i is 0:
             print j
             printMaze(pop[i])
@@ -116,6 +118,8 @@ for i in range(testRuns):
         pop = newPop(pop, children)
         setPop(pop)
 
+        print str(findSmallestFitness(pop)) + '\t' + str(sumFit(pop) / float(popSize))
+
     avgSolvable += numSolvable(pop)
     avgComplexity += sumComp(pop)/float(len(pop))
 
@@ -147,6 +151,9 @@ for i in range(testRuns):
         children = crossAndMut(children)
         pop = newPop(pop, children)
         setPop(pop)
+
+        print findSmallestFitness(pop)
+        print sumFit(pop) / float(popSize)
 
     avgSolvable += numSolvable(pop)
     avgComplexity += sumComp(pop)/float(len(pop))

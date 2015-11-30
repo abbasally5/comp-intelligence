@@ -97,6 +97,14 @@ def sumComp(pop):
         sum += score
     return sum
 
+def findSmallestFitness(pop):
+    min = 1000
+    for i in range(len(pop)):
+        fit = func(pop[i], pop)
+        if fit < min:
+            min = fit
+    return min
+
 def numOnes(ind):
     count = 0
     for i in range(len(ind)):
